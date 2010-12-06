@@ -1,0 +1,7 @@
+C:\Users\mtrinder\Downloads\NUnitLite-0.6.0\NUnitLite-0.6.0\solutions\vs2005_CF\NUnitLiteTests\bin\Debug\NUnitLiteTests.exe
+C:\Users\mtrinder\Downloads\NUnitLite-0.6.0\NUnitLite-0.6.0\solutions\vs2005_CF\NUnitLiteTests\bin\Debug\NUnitLiteTests.pdb
+C:\Users\mtrinder\Downloads\NUnitLite-0.6.0\NUnitLite-0.6.0\solutions\vs2005_CF\NUnitLiteTests\bin\Debug\NUnitLite.dll
+C:\Users\mtrinder\Downloads\NUnitLite-0.6.0\NUnitLite-0.6.0\solutions\vs2005_CF\NUnitLiteTests\bin\Debug\NUnitLite.pdb
+C:\Users\mtrinder\Downloads\NUnitLite-0.6.0\NUnitLite-0.6.0\solutions\vs2005_CF\NUnitLiteTests\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\mtrinder\Downloads\NUnitLite-0.6.0\NUnitLite-0.6.0\solutions\vs2005_CF\NUnitLiteTests\obj\Debug\NUnitLiteTests.exe
+C:\Users\mtrinder\Downloads\NUnitLite-0.6.0\NUnitLite-0.6.0\solutions\vs2005_CF\NUnitLiteTests\obj\Debug\NUnitLiteTests.pdb
