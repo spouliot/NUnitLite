@@ -35,6 +35,7 @@ namespace NUnitLite
         private string fullName;
 
         private RunState runState = RunState.Runnable;
+        private TestResult result;
         private string ignoreReason;
 
         private IDictionary properties = new Hashtable();
@@ -70,7 +71,7 @@ namespace NUnitLite
                 foreach (MethodInfo method in type.GetMethods())
                 {
                     if (TestCase.IsTestMethod(method))
-                        this.AddTest(new TestCase(method));
+                        this.AddTest(CreateTestCase(method));
                     //{
                     //    ITest test = TestCase.HasValidSignature(method)
                     //        ? (ITest)new TestCase(method)
@@ -81,6 +82,23 @@ namespace NUnitLite
                     //}
                 }
             }
+        }
+        #endregion
+
+        #region Events
+        public event EventHandler CompletedEvent;
+        public event EventHandler StartedEvent;
+
+        protected void OnCompleted (EventArgs args)
+        {
+            if (CompletedEvent != null)
+                CompletedEvent (this, args);
+        }
+
+        protected void OnStarted (EventArgs args)
+        {
+            if (StartedEvent != null)
+                StartedEvent (this, args);
         }
         #endregion
 
@@ -125,9 +143,23 @@ namespace NUnitLite
         {
             get { return tests; }
         }
+
+        public TestResult Result
+        {
+            get { return result; }
+            protected set { result = value; }
+        }
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Runs the suite in async mode if async mode is supported (by default it isn't and Run is called).
+        /// </summary>
+        public virtual void RunAsync(TestListener listener)
+        {
+            Run (listener);
+        }
+
         public TestResult Run()
         {
             return Run(new NullListener());
@@ -136,6 +168,7 @@ namespace NUnitLite
         public TestResult Run(TestListener listener)
         {
             int count = 0, failures = 0, errors = 0;
+            OnStarted (null);
             listener.TestStarted(this);
             TestResult result = new TestResult(this);
 
@@ -177,13 +210,21 @@ namespace NUnitLite
                     break;
             }
 
+            Result = result;
             listener.TestFinished(result);
+
+            OnCompleted (null);
             return result;
         }
 
         public void AddTest(ITest test)
         {
             tests.Add(test);
+        }
+
+        protected virtual TestCase CreateTestCase (MethodInfo method)
+        {
+            return new TestCase (method);
         }
         #endregion
 

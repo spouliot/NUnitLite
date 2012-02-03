@@ -44,6 +44,7 @@ namespace NUnitLite
         private string ignoreReason;
 
         private IDictionary properties;
+        private TestResult result;
         #endregion
 
         #region Constructors
@@ -108,6 +109,10 @@ namespace NUnitLite
             get { return fullName; }
         }
 
+        public MethodInfo Method {
+            get { return method; }
+        }
+
         public RunState RunState
         {
             get { return runState; }
@@ -140,9 +145,41 @@ namespace NUnitLite
         {
             get { return 1; }
         }
+
+        public TestResult Result
+        {
+            get { return result; }
+            protected set { result = value; }
+        }
+        #endregion
+
+        #region Events
+        public event EventHandler CompletedEvent;
+        public event EventHandler StartedEvent;
+
+        protected void OnCompleted (EventArgs args)
+        {
+            if (CompletedEvent != null)
+                CompletedEvent (this, args);
+        }
+
+        protected void OnStarted (EventArgs args)
+        {
+            if (StartedEvent != null)
+                StartedEvent (this, args);
+        }
+
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Runs the suite in async mode if async mode is supported (by default it isn't and Run is called).
+        /// </summary>
+        public virtual void RunAsync(TestListener listener)
+        {
+            Run(listener);
+        }
+
         public static bool IsTestMethod(MethodInfo method)
         {
             return Reflect.HasAttribute(method, typeof(TestAttribute));
@@ -155,19 +192,22 @@ namespace NUnitLite
 
         public TestResult Run(TestListener listener)
         {
+            OnStarted (null);
             listener.TestStarted(this);
 
             TestResult result = new TestResult(this);
             Run(result, listener);
 
+            Result = result;
             listener.TestFinished(result);
 
+            OnCompleted (null);
             return result;
         }
         #endregion
 
         #region Protected Methods
-        protected virtual void SetUp() 
+        public virtual void SetUp() 
         {
             if (setup != null)
             {
@@ -176,7 +216,7 @@ namespace NUnitLite
             }
         }
 
-        protected virtual void TearDown() 
+        public virtual void TearDown() 
         {
             if (teardown != null)
             {
@@ -229,7 +269,7 @@ namespace NUnitLite
             }
         }
 
-        protected virtual void RunTest()
+        public virtual void RunTest()
         {
             try
             {

@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace NUnitLite.Runner
 {
     //[Serializable]
-    class TestRunnerException : Exception
+    public class TestRunnerException : Exception
     {
         public TestRunnerException(string message) : base(message) { }
     }

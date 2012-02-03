@@ -13,7 +13,7 @@ namespace NUnit.Framework
     /// to preserve InnerException, including its stack trace
     /// </summary>
     //[Serializable]
-    class NUnitLiteException : Exception
+    public class NUnitLiteException : Exception
     {
         public NUnitLiteException(string message, Exception inner)
             : base(message, inner) { }
