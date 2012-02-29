@@ -180,6 +180,8 @@ namespace NUnitLite
 #else
                 this.Failure(ex.Message, StackFilter.Filter(ex.StackTrace));
 #endif
+            else if (ex is IgnoreException)
+                this.NotRun (ex.Message);
             else
                 this.Error(ex);
         }
