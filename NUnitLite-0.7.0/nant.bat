@@ -1,0 +1,2 @@
+tools\nant\nant.exe %*
+
