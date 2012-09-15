@@ -421,12 +421,16 @@ namespace NUnit.Framework.Internal
 		private void StopTracing()
 		{
 			traceWriter.Close();
+#if !MONOTOUCH
 			System.Diagnostics.Trace.Listeners.Remove( "NUnit" );
+#endif
 		}
 
 		private void StartTracing()
 		{
+#if !MONOTOUCH
 			System.Diagnostics.Trace.Listeners.Add( new TextWriterTraceListener( traceWriter, "NUnit" ) );
+#endif
 		}
 
         /// <summary>

@@ -169,6 +169,7 @@ namespace NUnit.Framework.Internal
 							break;
 						}
 					}
+#if !MONOTOUCH
 					else /* It's windows */
 					if (major == 2)
                     {
@@ -191,7 +192,7 @@ namespace NUnit.Framework.Internal
                             }
                         }
                     }
-
+#endif
                     currentFramework = new RuntimeFramework(runtime, new Version(major, minor));
                     currentFramework.clrVersion = Environment.Version;
 
@@ -461,6 +462,7 @@ namespace NUnit.Framework.Internal
 
         private static void AppendAllMonoFrameworks(FrameworkList frameworks)
         {
+#if !MONOTOUCH
             // TODO: Find multiple installed Mono versions under Linux
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
@@ -477,6 +479,7 @@ namespace NUnit.Framework.Internal
                 }
             }
             else
+#endif
                 AppendDefaultMonoFramework(frameworks);
         }
 
@@ -486,7 +489,7 @@ namespace NUnit.Framework.Internal
         {
             string monoPrefix = null;
             string version = null;
-
+#if !MONOTOUCH
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
                 RegistryKey key = Registry.LocalMachine.OpenSubKey(@"Software\Novell\Mono");
@@ -502,6 +505,7 @@ namespace NUnit.Framework.Internal
                 }
             }
             else // Assuming we're currently running Mono - change if more runtimes are added
+#endif
             {
                 string libMonoDir = Path.GetDirectoryName(typeof(object).Assembly.Location);
                 monoPrefix = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(libMonoDir)));
@@ -544,6 +548,7 @@ namespace NUnit.Framework.Internal
 
         private static void AppendDotNetFrameworks(FrameworkList frameworks)
         {
+#if !MONOTOUCH
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
                 RegistryKey key = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\.NETFramework\policy");
@@ -560,6 +565,7 @@ namespace NUnit.Framework.Internal
                     }
                 }
             }
+#endif
         }
 
 #if CLR_2_0 || CLR_4_0
