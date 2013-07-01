@@ -178,6 +178,7 @@ namespace NUnit.Framework.Internal
 							break;
 						}
 					}
+#if !MONOTOUCH
 					else /* It's windows */
 					if (major == 2)
                     {
@@ -200,7 +201,7 @@ namespace NUnit.Framework.Internal
                             }
                         }
                     }
-
+#endif
                     currentFramework = new RuntimeFramework(runtime, new Version(major, minor));
                     currentFramework.clrVersion = Environment.Version;
 
