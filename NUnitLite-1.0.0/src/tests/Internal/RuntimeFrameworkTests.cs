@@ -58,6 +58,7 @@ namespace NUnit.Framework.Internal
 
                 case RuntimeType.Net:
                 case RuntimeType.NetCF:
+#if !__MOBILE__
                     if (expectedFrameworkVersion.Major == 2)
                     {
                         RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\.NETFramework");
@@ -73,6 +74,7 @@ namespace NUnit.Framework.Internal
                             }
                         }
                     }
+#endif
                     break;
             }
 #endif
