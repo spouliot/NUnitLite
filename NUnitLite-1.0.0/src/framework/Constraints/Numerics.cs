@@ -54,6 +54,9 @@ namespace NUnit.Framework.Constraints
             {
                 if (obj is System.Double) return true;
                 if (obj is System.Single) return true;
+#if XAMCORE_2_0 && (MONOTOUCH || MONOMAC)
+                if (obj is System.nfloat) return true;
+#endif
             }
             return false;
         }
@@ -76,6 +79,10 @@ namespace NUnit.Framework.Constraints
                 if (obj is System.UInt64) return true;
                 if (obj is System.Int16) return true;
                 if (obj is System.UInt16) return true;
+#if XAMCORE_2_0 && (MONOTOUCH || MONOMAC)
+                if (obj is System.nint) return true;
+                if (obj is System.nuint) return true;
+#endif
             }
             return false;
         }
