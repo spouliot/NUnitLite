@@ -393,13 +393,28 @@ namespace NUnit.Framework.Constraints
             if (expected is decimal || actual is decimal)
                 return Convert.ToDecimal(expected).CompareTo(Convert.ToDecimal(actual));
 
-            if (expected is ulong || actual is ulong)
+            bool _ulong = (expected is ulong || actual is ulong);
+#if XAMCORE_2_0 && (MONOTOUCH || MONOMAC)
+            if (!_ulong && (IntPtr.Size == 8))
+                _ulong = (expected is nuint || actual is nuint);
+#endif
+            if (_ulong)
                 return Convert.ToUInt64(expected).CompareTo(Convert.ToUInt64(actual));
 
-            if (expected is long || actual is long)
-                return Convert.ToInt64(expected).CompareTo(Convert.ToInt64(actual));
+            bool _long = (expected is long || actual is long);
+#if XAMCORE_2_0 && (MONOTOUCH || MONOMAC)
+            if (!_long && (IntPtr.Size == 8))
+                _long = (expected is nint || actual is nint);
+#endif
+            if (_long)
+               return Convert.ToInt64(expected).CompareTo(Convert.ToInt64(actual));
 
-            if (expected is uint || actual is uint)
+            bool _uint = (expected is uint || actual is uint);
+#if XAMCORE_2_0 && (MONOTOUCH || MONOMAC)
+            if (!_uint && (IntPtr.Size == 4))
+                _uint = (expected is nuint || actual is nuint);
+#endif
+            if (_uint)
                 return Convert.ToUInt32(expected).CompareTo(Convert.ToUInt32(actual));
 
             return Convert.ToInt32(expected).CompareTo(Convert.ToInt32(actual));
