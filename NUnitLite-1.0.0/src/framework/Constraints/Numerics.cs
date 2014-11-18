@@ -100,10 +100,20 @@ namespace NUnit.Framework.Constraints
         /// <returns>True if the values are equal</returns>
         public static bool AreEqual(object expected, object actual, ref Tolerance tolerance)
         {
-            if (expected is double || actual is double)
+			bool _double = (expected is double || actual is double);
+#if XAMCORE_2_0 && (MONOTOUCH || MONOMAC)
+            if (!_double && (IntPtr.Size == 8))
+                _double = (expected is nfloat || actual is nfloat);
+#endif
+            if (_double)
                 return AreEqual(Convert.ToDouble(expected), Convert.ToDouble(actual), ref tolerance);
 
-            if (expected is float || actual is float)
+			bool _float = (expected is float || actual is float);
+#if XAMCORE_2_0 && (MONOTOUCH || MONOMAC)
+            if (!_float && (IntPtr.Size == 4))
+                _float = (expected is nfloat || actual is nfloat);
+#endif
+            if (_float)
                 return AreEqual(Convert.ToSingle(expected), Convert.ToSingle(actual), ref tolerance);
 
             if (tolerance.Mode == ToleranceMode.Ulps)
@@ -112,15 +122,31 @@ namespace NUnit.Framework.Constraints
             if (expected is decimal || actual is decimal)
                 return AreEqual(Convert.ToDecimal(expected), Convert.ToDecimal(actual), tolerance);
 
-            if (expected is ulong || actual is ulong)
+			bool _ulong = (expected is ulong || actual is ulong);
+#if XAMCORE_2_0 && (MONOTOUCH || MONOMAC)
+            if (!_ulong && (IntPtr.Size == 8))
+                _ulong = (expected is nuint || actual is nuint);
+#endif
+            if (_ulong)
                 return AreEqual(Convert.ToUInt64(expected), Convert.ToUInt64(actual), tolerance);
 
-            if (expected is long || actual is long)
+			bool _long = (expected is long || actual is long);
+#if XAMCORE_2_0 && (MONOTOUCH || MONOMAC)
+            if (!_long && (IntPtr.Size == 8))
+                _long = (expected is nint || actual is nint);
+#endif
+            if (_long)
                 return AreEqual(Convert.ToInt64(expected), Convert.ToInt64(actual), tolerance);
 
-            if (expected is uint || actual is uint)
+			bool _uint = (expected is uint || actual is uint);
+#if XAMCORE_2_0 && (MONOTOUCH || MONOMAC)
+            if (!_uint && (IntPtr.Size == 4))
+                _uint = (expected is nuint || actual is nuint);
+#endif
+            if (_uint)
                 return AreEqual(Convert.ToUInt32(expected), Convert.ToUInt32(actual), tolerance);
 
+            // int or nint on 32bits archs
             return AreEqual(Convert.ToInt32(expected), Convert.ToInt32(actual), tolerance);
         }
 
