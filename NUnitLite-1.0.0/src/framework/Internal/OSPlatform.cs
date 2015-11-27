@@ -60,7 +60,7 @@ namespace NUnit.Framework.Internal
                 {
                     OperatingSystem os = Environment.OSVersion;
 
-#if SILVERLIGHT
+#if SILVERLIGHT || __MOBILE__
                     // TODO: Runtime silverlight detection?
                     currentPlatform = new OSPlatform(os.Platform, os.Version);
 #else
@@ -108,6 +108,7 @@ namespace NUnit.Framework.Internal
             Server,
         }
 
+#if !__MOBILE__
         [StructLayout(LayoutKind.Sequential)]
         struct OSVERSIONINFOEX
         {
@@ -127,6 +128,7 @@ namespace NUnit.Framework.Internal
 
         [DllImport("Kernel32.dll")]
         private static extern bool GetVersionEx(ref OSVERSIONINFOEX osvi);
+#endif
         #endregion
 
         /// <summary>
